@@ -11,7 +11,7 @@ Sistem ini adalah bot trading otomatis yang menggunakan analisis teknikal, senti
    - Data historis diambil dari Binance (candlestick 15 menit).
 
 2. **Analisis Sentimen**
-   - Menganalisis sentimen pasar menggunakan 4 model AI: Ollama, DeepSeek, Anthropic, dan OpenAI.
+   - Menganalisis sentimen pasar menggunakan 4 model AI: Ollama (lokal AI), DeepSeek, Anthropic, dan OpenAI.
    - Menggabungkan hasil analisis untuk menghasilkan sinyal trading akhir.
 
 3. **Eksekusi Trading Otomatis**

@@ -15,6 +15,17 @@ export class BrokerService {
     return this.indodaxBrokerService.createOrder(pair, type, price, amount);
   }
 
+  async getLatestOrderId(pair: string): Promise<string | null> {
+    return this.indodaxBrokerService.getLatestOrderId(pair);
+  }
+
+  async getOrder(orderId: string, pair: string) {
+    return this.indodaxBrokerService.getOrder(orderId, pair);
+  }
+  async cancelOrder(orderId: string, pair: string, type: 'buy' | 'sell') {
+    return this.indodaxBrokerService.cancelOrder(orderId, pair, type);
+  }
+
   async getBalance() {
     return this.indodaxBrokerService.getBalance();
   }
