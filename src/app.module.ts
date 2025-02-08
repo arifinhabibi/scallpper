@@ -9,13 +9,13 @@ import { BrokerService } from './broker/broker.service';
 import { IndodaxBrokerService } from './broker/indodax-broker.service';
 import { TradingService } from './trading/trading.service';
 import { AnalysisService } from './analysis/analysis.service';
-import { AiAnalysisService } from './analysis/ai-analysis.service';
 import { StrategyAnalysisService } from './analysis/strategy-analysis.service';
 import { MarketDataService } from './market-data/market-data.service';
 import { BinanceService } from './market-data/binance.service';
 import { IndodaxService } from './market-data/indodax.service';
 import { TradingSignalService } from './trading/trading-signal.service';
 import { BacktestService } from './backtest.service';
+import { SentimentAnalysisService } from './analysis/sentiment-analysis.service';
 
 @Module({
   imports: [
@@ -62,13 +62,13 @@ import { BacktestService } from './backtest.service';
     IndodaxBrokerService,
     TradingService,
     AnalysisService,
-    AiAnalysisService,
     StrategyAnalysisService,
     MarketDataService,
     BinanceService,
     IndodaxService,
     TradingSignalService,
     BacktestService,
+    SentimentAnalysisService
   ],
 })
 export class AppModule {}

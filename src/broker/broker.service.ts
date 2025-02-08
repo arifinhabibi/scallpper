@@ -29,4 +29,7 @@ export class BrokerService {
   async getBalance() {
     return this.indodaxBrokerService.getBalance();
   }
+  async getPriceBTCIndodax() {
+    return this.indodaxBrokerService.getTicker("btc_idr");
+  }
 }

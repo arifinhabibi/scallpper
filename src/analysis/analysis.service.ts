@@ -1,50 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { AiAnalysisService } from './ai-analysis.service';
 import { StrategyAnalysisService } from './strategy-analysis.service';
+import { SentimentAnalysisService } from './sentiment-analysis.service';
 
 @Injectable()
 export class AnalysisService {
   constructor(
-    private readonly aiAnalysisService: AiAnalysisService,
+    private readonly sentimentAnalysisService: SentimentAnalysisService,
     private readonly strategyAnalysisService: StrategyAnalysisService,
   ) {}
 
   /**
    * Menganalisis pasangan mata uang.
    * @param pair Pasangan mata uang yang akan dianalisis.
-   * @returns Hasil analisis lengkap.
+   * @returns Hasil analisis lengkap dalam format standar.
    */
   async analyze(pair: string) {
-    // Dapatkan data teknikal dari StrategyAnalysisService
-    const marketData = await this.strategyAnalysisService.getTechnicalIndicators(pair);
-  
-    // Analisis sentimen menggunakan AI (Ollama)
-    const sentimentSignal = await this.aiAnalysisService.analyzeSentiment(pair);
-  
-    // Analisis data pasar menggunakan 4 model AI
-    const marketSignal = await this.aiAnalysisService.analyzeMarketWithMultipleAI(marketData);
-  
-    // Tentukan sinyal akhir berdasarkan hasil analisis AI
-    let finalSignal: 'BUY' | 'SELL' | 'HOLD' = 'HOLD';
-    let reason = 'No strong signal from AI models.';
-  
-    if (marketSignal === 'STRONG_BUY') {
-      finalSignal = 'BUY';
-      reason = 'Strong buy signal detected by multiple AI models based on market indicators.';
-    } else if (marketSignal === 'STRONG_SELL') {
-      finalSignal = 'SELL';
-      reason = 'Strong sell signal detected by multiple AI models based on market indicators.';
+    try {
+      // Dapatkan data teknikal dari StrategyAnalysisService
+      const strategyResult = await this.strategyAnalysisService.strategyAnalysis(pair);
+
+      // Analisis sentimen menggunakan AI (Ollama)
+      const sentimentSignal = await this.sentimentAnalysisService.analyzeSentiment(pair);
+
+
+      return {
+        signal: strategyResult.signal,
+        sentiment: sentimentSignal,
+        score_signal: strategyResult.score_signal,
+        reason: strategyResult.reason,
+      };
+    } catch (error) {
+      console.error(`Error during analysis for pair ${pair}:`, error.message);
+      throw new Error('Failed to analyze the market.');
     }
-  
-    return {
-      marketData: {
-        signal: finalSignal || 'HOLD', // Pastikan signal selalu ada
-        price: marketData.price,
-        indicators: marketData.indicators,
-      },
-      sentimentAnalysis: sentimentSignal,
-      marketAnalysis: marketSignal,
-      reason: reason, // Alasan kuat dari salah satu AI
-    };
   }
 }
